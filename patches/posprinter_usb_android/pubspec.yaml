@@ -1,0 +1,37 @@
+name: posprinter_usb_android
+description: >-
+  Android USB host transport for ESC/POS thermal receipt printers: device
+  discovery, the USB permission handshake and raw bulk-transfer printing.
+version: 1.0.0
+
+homepage: https://github.com/EishalCyril/posprinter_usb_android
+repository: https://github.com/EishalCyril/posprinter_usb_android
+issue_tracker: https://github.com/EishalCyril/posprinter_usb_android/issues
+
+topics:
+  - printer
+  - thermal-printer
+  - usb
+  - esc-pos
+
+environment:
+  # `kotlin.compilerOptions` requires Kotlin Gradle Plugin 2.0.0+, which Flutter
+  # has enforced since 3.44.
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.sersoluciones.flutter_pos_printer_platform
+        pluginClass: FlutterPosPrinterPlatformPlugin

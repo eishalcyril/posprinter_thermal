@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+tasks:
+  bump:
+    cmds:
+      # - pubversion patch
+      - /Users/cufa/Desktop/increment_build.sh
+
+  get:
+    cmds:
+      - flutter clean
+      - flutter pub get
+
+  build-ios:
+    cmds:
+      - flutter build ios --release
+
+  open-xcode:
+    cmds:
+      - open ios/Runner.xcworkspace
+
+  upgrade:
+    cmds:
+      - flutter upgrade
+
+  appbundle:
+    cmds:
+      - flutter build appbundle --no-tree-shake-icons
+
+  # Full sequence - run tasks sequentially
+  deployIA:
+    cmds:
+      - task bump
+      - task get
+      - task build-ios
+      - task open-xcode
+      - task appbundle
+
+  # iOS only sequence - sequential
+  deployI:
+    cmds:
+      - task get
+      - task build-ios
+      - task open-xcode
+
+  # android build only sequence - sequential
+  deployA:
+    cmds:
+      - task get
+      - task appbundle
+
+  # bump & android build only sequence - sequential
+  bumpdeployA:
+    cmds:
+      - task bump
+      - task get
+      - task appbundle
+  # bump & android build only sequence - sequential
+  bumpdeployI:
+    cmds:
+      - task bump
+      - task get
+      - task build-ios
+      - task open-xcode
+    # bump & ios& androids build sequence - sequential
+  bumpdeployIA:
+    cmds:
+      - task bump
+      - task get
+      - task appbundle
+      - task build-ios
+      - task open-xcode
+  apk:
+    cmds:
+      - task get
+      - flutter build apk --no-tree-shake-icons
+
+  splitapk:
+    cmds:
+      - task get
+      - flutter build apk --split-per-abi --no-tree-shake-icons
+
+  setlaunchericon:
+    cmds:
+      - dart run flutter_launcher_icons
+
+  ## Run =>  task setappname appname="New App Name"
+  setappname:
+    vars:
+      appname: '{{.appname | default "My App Name"}}'
+    cmds:
+      - dart run rename_app:main all="{{.appname}}"
+
+  ## GIt cmd shorthands
+
+  # Checkout a branch
+  # Usage: task checkout --branch feature-branch
+  checkout:
+    desc: "Checkout a branch"
+    vars:
+      branch: "develop"
+    cmds:
+      - git checkout "{{.branch}}"
+  stash:
+    cmds:
+      - git stash
+  pop:
+    cmds:
+      - git stash pop
+  # Push current branch or specified branch
+  # Usage: task push               (pushes current branch)
+  #        task push --branch dev  (pushes dev branch)
+  push:
+    desc: "Push current branch or specified branch"
+    vars:
+      branch: ""
+    cmds:
+      - |
+        if [ -z "{{.branch}}" ]; then
+          git push
+        else
+          git push origin "{{.branch}}"
+        fi
+
+  # Pull from a branch
+  # Usage: task pull               (pulls from develop branch)
+  #        task pull --branch dev  (pulls from dev branch)
+  pull:
+    desc: "Pull from a branch"
+    vars:
+      branch: "develop"
+    cmds:
+      - git pull origin "{{.branch}}"
+
+  # List all local and remote branches
+  # Usage: task list-branches
+  list:
+    desc: "List all local and remote branches"
+    cmds:
+      - git branch -a
+
+  # for 16 kb poage alignment of native libraries in apk
+  solist:
+    desc: "List LOAD headers for all .so and verify 16 KB zip alignment"
+    cmds:
+      - rm -rf /tmp/apk && mkdir -p /tmp/apk
+      - unzip -q build/app/outputs/flutter-apk/app-release.apk -d /tmp/apk
+      - |
+        bash -c 'set -eo pipefail
+        if [ ! -d /tmp/apk/lib ]; then
+          echo "No native libraries found under /tmp/apk/lib"
+          exit 0
+        fi
+        find /tmp/apk/lib -type f -name "*.so" -print0 \
+        | xargs -0 -I{} sh -c "echo \"=== {} ===\"; llvm-objdump -p \"{}\" | grep -E \"^ +LOAD\" || true"'
+      - |
+        bash -c 'set -eo pipefail
+        BT="$(ls -d "$HOME/Library/Android/sdk/build-tools/"* | sort -V | tail -1)"
+        echo "Using build-tools: $BT"
+        "$BT/zipalign" -v -c -P 16 4 build/app/outputs/flutter-apk/app-release.apk'
+
+  # shows verify successful if 16 kb is ok
+  findzipalign:
+    cmds:
+      - find ~/Library/Android/sdk/build-tools -name "zipalign"
+
+  unzip:
+    cmds:
+      - unzip -l build/app/outputs/bundle/release/app-release.aab | grep 'base/lib/.*.so'
+
+  # for changing package name of the app eg: task package-change --packagename com.new.package.name
+  package-change:
+    vars:
+      packagename: '{{.packagename | default "com.example.app"}}'
+    cmds:
+      - dart run change_app_package_name:main {{.packagename}}

@@ -13,8 +13,6 @@ build/
 # Assets and example
 example/
 
-# Patches - USB plugin maintained separately
-patches/
 
 # Project files
 .screenshots/
