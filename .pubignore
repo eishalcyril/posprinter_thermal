@@ -1,0 +1,23 @@
+# Files that belong to the host demo app, not to the published package.
+android/
+ios/
+linux/
+macos/
+windows/
+web/
+build/
+.dart_tool/
+# Keep assets/animations: it ships with the package (the printing loader).
+Taskfile.yml
+DEVELOPMENT_LOG.md
+posprinter_thermal.iml
+example/.dart_tool/
+example/build/
+example/pubspec.lock
+# Point/s at the in-repo plugin checkout, which is not part of the archive.
+example/pubspec_overrides.yaml
+
+# The Android USB plugin is maintained here but published as its own package
+# (posprinter_usb_android). It must not be bundled into this archive: a
+# published package cannot carry a path dependency.
+patches/
