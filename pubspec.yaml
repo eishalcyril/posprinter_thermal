@@ -4,10 +4,9 @@ description: >-
   connection screens, paired-device discovery and ESC/POS test printing.
 version: 0.1.0
 
-# TODO: Add your repository/homepage URL before publishing to pub.dev.
-# homepage: https://github.com/your-org/posprinter_thermal
-# repository: https://github.com/your-org/posprinter_thermal
-# issue_tracker: https://github.com/your-org/posprinter_thermal/issues
+# homepage: https://github.com/EishalCyril/posprinter_thermal
+# repository: https://github.com/EishalCyril/posprinter_thermal
+# issue_tracker: https://github.com/EishalCyril/posprinter_thermal/issues
 
 topics:
   - printer
