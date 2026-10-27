@@ -464,39 +464,7 @@ It is intentionally **not** part of the published package: consumers resolve
 
 ---
 
-## Publishing checklist
 
-1. Set your real `homepage` / `repository` / `issue_tracker` in `pubspec.yaml`.
-2. Rename the package if `posprinter_thermal` is already taken on pub.dev.
-3. `LICENSE` is MIT, © 2026 Eishal Cyril — update it only if you rebrand.
-4. Bump `version` and update `CHANGELOG.md`.
-5. **Publish `patches/posprinter_usb_android` first.** It is a normal
-dependency of this package, so its version must already be on pub.dev:
-
-   ```bash
-   cd patches/posprinter_usb_android
-   flutter analyze && flutter test
-   dart pub publish --dry-run
-   dart pub publish
-   ```
-
-6. Then publish this package:
-
-   ```bash
-   flutter analyze
-   flutter test
-   dart pub publish --dry-run
-   dart pub publish
-   ```
-
-   `--dry-run` reports one hint (non-dev dependencies overridden in
-   `pubspec_overrides.yaml`) and one warning (no `homepage`/`repository`). Both
-   are expected in this repository; the overrides are stripped from the archive.
-
-7. Test the demo on a real Android device with a Bluetooth printer and a USB
-   printer.
-
----
 
 ## Troubleshooting
 
@@ -524,6 +492,14 @@ dependency of this package, so its version must already be on pub.dev:
 ---
 
 ## License and third-party components
+
+## Screenshots
+
+![Mockup](screenshots/mockup.png)
+
+*Promotional mockup showing the printer settings UI on smartphone and tablet mockups.*
+
+---
 
 `posprinter_thermal` is released under the MIT license — see [LICENSE](LICENSE),
 © 2026 Eishal Cyril and the posprinter_thermal contributors.
