@@ -1,0 +1,43 @@
+# Flutter platform directories - these are generated per-platform
+android/
+ios/
+linux/
+macos/
+windows/
+
+# Pub cache and generated files
+.pubignore
+**.dart_tool/
+build/
+
+# Assets and example
+example/
+
+# Patches - USB plugin maintained separately
+patches/
+
+# Project files
+.screenshots/
+*.lock
+
+# Dart/Flutter specific
+.dart_tool/
+analysis_options.lock
+
+# IDE files
+.vscode/
+.idea/
+
+# Keystores (Android)
+*.keystore
+*.jks
+
+# Local properties
+local.properties
+
+# Android studio
+/.gradle/
+/captures/
+
+# macOS
+.DS_Store
