@@ -1,0 +1,58 @@
+name: posprinter_thermal
+description: >-
+  Premium Flutter SDK for Bluetooth and USB thermal printers: branded
+  connection screens, paired-device discovery and ESC/POS test printing.
+version: 0.1.0
+
+# TODO: Add your repository/homepage URL before publishing to pub.dev.
+# homepage: https://github.com/your-org/posprinter_thermal
+# repository: https://github.com/your-org/posprinter_thermal
+# issue_tracker: https://github.com/your-org/posprinter_thermal/issues
+
+topics:
+  - printer
+  - thermal-printer
+  - bluetooth
+  - usb
+  - esc-pos
+
+environment:
+  # Flutter 3.44 / Dart 3.12 is the floor imposed by posprinter_usb_android,
+  # which uses `kotlin.compilerOptions` (Kotlin Gradle Plugin 2.0+).
+  sdk: ^3.12.0
+  flutter: ">=3.44.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  animated_toggle_switch: ^0.8.7
+  flutter_esc_pos_utils: ^1.0.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  # Pinned to 12.x: permission_handler 13.x pulls
+  # permission_handler_android 14.x, which requires compileSdk 37. API 37 is
+  # only published as `android-37.0`, which AGP 9.0.x cannot resolve, so the
+  # Android build fails. Remove this pin once the plugin builds against
+  # android-37.0 with a supported AGP. See DEVELOPMENT_LOG.md.
+  permission_handler: ^12.0.3
+  # Android-only USB host transport, maintained in ./patches and published as
+  # its own package so host apps get the Android USB fixes.
+  posprinter_usb_android: ^1.0.0
+  print_bluetooth_thermal: ^1.2.5
+  lottie: ^3.6.1
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+# The USB plugin is developed in ./patches. pubspec_overrides.yaml points this
+# repository at that local checkout without putting a path dependency (or a
+# dependency_overrides section) into the published package.
+
+flutter:
+  uses-material-design: true
+  assets:
+    # Printing loader animation shown by GlobalLoaderController while a job
+    # is on its way to the printer.
+    - assets/animations/printer_loading.json
